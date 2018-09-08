@@ -1,20 +1,7 @@
-FROM microsoft/aspnetcore:2.0 AS base
+FROM microsoft/aspnetcore:2.0
+ARG source
 WORKDIR /app
-EXPOSE 80
-
-FROM microsoft/aspnetcore-build:2.0 AS build
-WORKDIR /src
-COPY *.sln ./
-COPY DemoCoreAppWithDocker/DemoCoreAppWithDocker.csproj DemoCoreAppWithDocker/
-RUN dotnet restore
-COPY . .
-WORKDIR /src/DemoCoreAppWithDocker
-RUN dotnet build -c Release -o /app
-
-FROM build AS publish
-RUN dotnet publish -c Release -o /app
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app .
+ENV ASPNETCORE_URLS http://+:83
+EXPOSE 83
+COPY ${source:-obj/Docker/publish} .
 ENTRYPOINT ["dotnet", "DemoCoreAppWithDocker.dll"]

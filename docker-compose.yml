@@ -4,5 +4,5 @@ services:
   democoreappwithdocker:
     image: democoreappwithdocker
     build:
-      context: .
-      dockerfile: DemoCoreAppWithDocker/Dockerfile
+      context: ./DemoCoreAppWithDocker
+      dockerfile: Dockerfile
