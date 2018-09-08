@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using DemoCoreAppWithDocker.Filters;
 
 namespace DemoCoreAppWithDocker
 {
@@ -23,6 +24,13 @@ namespace DemoCoreAppWithDocker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add AppSettings Service
+            var appSettings = new AppSettings();
+            ConfigurationBinder.Bind(Configuration.GetSection("AppSettings"), appSettings);
+            services.AddSingleton<IAppSettings>(appSettings);
+
+            // Add CustomAuthorize Service
+            services.AddMvc(config => config.Filters.Add(typeof(CustomAuthorize)));
             services.AddMvc();
         }
 

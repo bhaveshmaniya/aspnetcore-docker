@@ -9,11 +9,24 @@ namespace DemoCoreAppWithDocker.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly IAppSettings _appSettings;
+
+        public ValuesController(IAppSettings appSettings)
+        {
+            _appSettings = appSettings;
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            var result = new List<string>(){
+                "Value1",
+                "Value2",
+                _appSettings.EnvKey
+            };
+
+            return result;
         }
 
         // GET api/values/5
